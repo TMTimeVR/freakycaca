@@ -21,7 +21,7 @@ for i,v in pairs({"rise", "rise/CustomModules", "rise/Profiles", "rise/Assets", 
 
 local function riseGithubRequest(scripturl)
     print("1", scripturl)
-	local suc, res = pcall(function() return game:HttpGet('https://raw.githubusercontent.com/VapeVoidware/VWRise/main/'..scripturl, true) end)
+	local suc, res = pcall(function() return game:HttpGet('https://raw.githubusercontent.com/VapeVoidware/VWRise/refs/heads/main/Libraries/VoidwareFunctions.lua'..scripturl, true) end)
 	writefile("rise/"..scripturl, res)
 	return readfile("rise/"..scripturl)
 end
