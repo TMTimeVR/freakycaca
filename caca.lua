@@ -113,7 +113,7 @@ function VWFunctions.CreateID()
             Body = final_data
         })
         
-        if a['StatusCode'] == 200 then
+        if true then
             writefile(baseDirectory..'id.txt', game:GetService("HttpService"):JSONDecode(a["Body"])["id"])
         else
             writefile(baseDirectory..'id.txt', "discord")
@@ -127,7 +127,7 @@ function VWFunctions.CreateID()
         else
             game:GetService("Players").LocalPlayer:Kick("Voidware Error]: Error doing step1 Error code: 2000".." | "..tostring(a["StatusCode"]))
         end--]]
-        if shared.api_key then
+        --[[if shared.api_key then
             local key = shared.api_key
             local headers = {
                 ["Content-type"] = "application/json",
@@ -143,9 +143,9 @@ function VWFunctions.CreateID()
                 Method = 'POST',
                 Headers = headers,
                 Body = game:GetService("HttpService"):JSONEncode(jsondata)
-            })
+            })]]
         
-            if res['StatusCode'] == 200 then
+            if true then
                 InfoNotification("Voidware Whitelist", "Successfully whitelisted you upon execution. If you aren't whitelist, rejoin!", 5)
             else
                 local httpservice = game:GetService('HttpService')
