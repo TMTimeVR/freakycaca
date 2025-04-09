@@ -20,7 +20,6 @@ shared.VapeExecuted = true
 for i,v in pairs({"rise", "rise/CustomModules", "rise/Profiles", "rise/Assets", "rise/Libraries", "rise/fonts"}) do if not isfolder(v) then makefolder(v) end end
 
 local function riseGithubRequest(scripturl)
-    print("1", scripturl)
 	local suc, res = pcall(function() return game:HttpGet('https://raw.githubusercontent.com/VapeVoidware/VWRise/refs/heads/main/Libraries/VoidwareFunctions.lua'..scripturl, true) end)
 	writefile("rise/"..scripturl, res)
 	return readfile("rise/"..scripturl)
@@ -33,7 +32,6 @@ if (not suc) then shared.CheatEngineMode = true end
 
 local function downloadFonts()
 	local function downloadFont(path)
-	    print("2", path)
 		riseGithubRequest(path)
 	end
 	local res1 = "https://api.github.com/repos/VapeVoidware/VWRise/contents/fonts"
@@ -47,16 +45,16 @@ local function downloadFonts()
 		end
 	end
 	for i, v in pairs(fonts) do
-	    print("3", i, v)
-        downloadFont("fonts/"..fonts[i])
-        task.wait()
-    end
+		downloadFont("fonts/"..fonts[i])
+		task.wait()
+	end
 end
 downloadFonts()
+
 shared.GuiLibraryFont = Font.new(
     "rbxasset://fonts/families/GothamSSm.json", 
     Enum.FontWeight.Medium,
-    Enum.FontStyle.Normal -- Normal
+    Enum.FontStyle.Normal
 )
 local UIS = game:GetService("UserInputService")
 shared.ClickGUIScale = UIS.TouchEnabled and 1.1 or 1
@@ -64,6 +62,19 @@ shared.ClickUIARC = UIS.TouchEnabled and 1.4 or 1.3
 
 GuiLibrary = pload("GuiLibrary.lua", true, true)
 VWFunctions = pload("Libraries/VoidwareFunctions.lua", true, true)
+
+-- Fixed GetDescendants nil error
+if VWFunctions and VWFunctions.enableInstanceEffect then
+	local originalEnableEffect = VWFunctions.enableInstanceEffect
+	VWFunctions.enableInstanceEffect = function(instance)
+		if instance and typeof(instance.GetDescendants) == "function" then
+			return originalEnableEffect(instance)
+		else
+			warn("[VWFunctions] Tried to enable instance effect on nil or invalid instance")
+		end
+	end
+end
+
 
 GuiLibrary.SelfDestructEvent.Event:Connect(function() VWFunctions.SelfDestructEvent:Fire() end)
 
